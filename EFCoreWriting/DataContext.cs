@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace EFCoreWriting;
 
-public class ApplicationDataContext (DbContextOptions<ApplicationDataContext> options) : DbContext(options)
+public class ApplicationDataContext(DbContextOptions<ApplicationDataContext> options) : DbContext(options)
 {
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<OrderHeader> OrderHeaders => Set<OrderHeader>();
@@ -32,6 +32,7 @@ public class ApplicationDataContextFactory : IDesignTimeDbContextFactory<Applica
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDataContext>();
         optionsBuilder.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
 
-        return new ApplicationDataContext(optionsBuilder.Options);
+        var context = new ApplicationDataContext(optionsBuilder.Options);
+        return context;
     }
 }
