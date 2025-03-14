@@ -1,0 +1,38 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+
+namespace EFCoreWriting;
+
+public class ApplicationDataContext(DbContextOptions<ApplicationDataContext> options) : DbContext(options)
+{
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<OrderHeader> OrderHeaders => Set<OrderHeader>();
+    public DbSet<OrderLine> OrderLines => Set<OrderLine>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<OrderLine>()
+            .Property(ol => ol.UnitPrice)
+            .HasConversion<double>();
+
+        modelBuilder.Entity<Customer>()
+            .ToTable(c => c.HasCheckConstraint("CK_CountryIsoCode", "length(CountryIsoCode) = 2"));
+    }
+}
+
+public class ApplicationDataContextFactory : IDesignTimeDbContextFactory<ApplicationDataContext>
+{
+    public ApplicationDataContext CreateDbContext(string[] args)
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDataContext>();
+        optionsBuilder.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+
+        var context = new ApplicationDataContext(optionsBuilder.Options);
+        return context;
+    }
+}
