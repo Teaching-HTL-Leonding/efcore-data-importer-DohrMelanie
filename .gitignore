@@ -402,3 +402,5 @@ FodyWeavers.xsd
 *.sln.iml
 EFCoreWriting/Exercises.db-shm
 EFCoreWriting/Exercises.db-wal
+Exercises.db-shm
+Exercises.db-wal

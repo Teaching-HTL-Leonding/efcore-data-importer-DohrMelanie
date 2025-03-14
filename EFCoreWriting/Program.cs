@@ -10,11 +10,11 @@ public class Program
     {
         var dbContextFactory = new ApplicationDataContextFactory();
         using var context = dbContextFactory.CreateDbContext([]);
-        var parser = new Parser(context);
-        parser.ParseFile().Wait();
+        var importer = new Importer(context);
+        importer.ImportData().Wait();
     }
 
-    /*
+    
     private static async Task fromLesson()
     {
         var factory = new ApplicationDataContextFactory();
@@ -68,7 +68,7 @@ public class Program
         customer.CompanyName += " School of Witchcraft and Wizardry";
         await context.SaveChangesAsync();
         */
-    /*
+    
         customer = new Customer(0, "Hogwarts", "UK", "Scotland");
         customer.Orders.Add(new OrderHeader(0, 0, customer, new DateOnly(2022, 1, 1), "UK", "EXW", "Net 30")); // with Add and not async because Orders is a List
         await context.SaveChangesAsync();
@@ -84,7 +84,7 @@ public class Program
             Console.WriteLine($"Customer {c.ID} has {c.Orders[0].OrderDate}");
         }
         */
-    /*
+    
         await using (var transaction = await context.Database.BeginTransactionAsync())
         {
             Customer? c1;
@@ -103,7 +103,5 @@ public class Program
                 Console.WriteLine(ex.Message);
             }
         }
-    }*/
+    }
 }
-
-
